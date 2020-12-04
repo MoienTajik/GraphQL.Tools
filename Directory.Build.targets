@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Update="HotChocolate" Version="$(HotChocolateVer)" />
     <PackageReference Update="HotChocolate.Language" Version="$(HotChocolateVer)" />
   </ItemGroup>
 

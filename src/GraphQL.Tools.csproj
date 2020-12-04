@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="HotChocolate" />
     <PackageReference Include="HotChocolate.Language" />
   </ItemGroup>
 
