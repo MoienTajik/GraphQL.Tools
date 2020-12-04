@@ -6,7 +6,9 @@
 
   <ItemGroup>
     <PackageReference Update="HotChocolate" Version="$(HotChocolateVer)" />
-    <PackageReference Update="HotChocolate.Language" Version="$(HotChocolateVer)" />
+
+    <PackageReference Update="Microsoft.CodeAnalysis.CSharp" Version="3.8.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2"/>
   </ItemGroup>
 
 </Project>
