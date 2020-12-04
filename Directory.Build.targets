@@ -1,0 +1,11 @@
+<Project>
+
+  <PropertyGroup>
+    <HotChocolateVer>11.0.1</HotChocolateVer>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Update="HotChocolate.Language" Version="$(HotChocolateVer)" />
+  </ItemGroup>
+
+</Project>
