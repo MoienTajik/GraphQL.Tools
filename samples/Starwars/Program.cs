@@ -1,4 +1,5 @@
 ﻿using System;
+using GraphqlCodeGenerator;
 
 namespace Starwars
 {
@@ -6,7 +7,14 @@ namespace Starwars
     {
         static void Main()
         {
-            Console.WriteLine("Hello World!");
+            var gql = new GraphqlGeneratedCodes();
+            Console.WriteLine(gql.Age);
         }
+    }
+
+    [GenerateGraphqlCodes]
+    public partial class GraphqlGeneratedCodes
+    {
+       
     }
 }
