@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GraphQL.Tools.Generator.Base;
 using GraphQL.Types;
-using Starwars.Generator.Base;
 
-namespace Starwars.Generator.Extractors
+namespace GraphQL.Tools.Generator.Extractors
 {
     /// <summary>
     /// This extractor will extract GraphQL enums.

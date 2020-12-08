@@ -1,4 +1,4 @@
-﻿namespace Starwars.Generator.Base
+﻿namespace GraphQL.Tools.Generator.Base
 {
     public interface IMember
     {

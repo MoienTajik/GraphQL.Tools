@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Starwars.Generator.Base
+namespace GraphQL.Tools.Generator.Base
 {
-    public class Enum : IGeneratableType
+    public class Interface : IGeneratableType
     {
-        public Enum(string name)
+        public Interface(string name)
         {
             Name = name;
             Properties = new List<IMember>();
@@ -18,10 +18,10 @@ namespace Starwars.Generator.Base
 
         public override string ToString()
         {
-            var properties = string.Join($",{Environment.NewLine}", Properties.Select(prop => prop.ToString()));
+            var properties = string.Join(Environment.NewLine, Properties.Select(prop => prop.ToString()));
 
             return $@"
-                public enum {Name}
+                public interface {Name}
                 {{
                     {properties}
                 }}

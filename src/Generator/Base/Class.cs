@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Starwars.Generator.Base
+namespace GraphQL.Tools.Generator.Base
 {
     public class Class : IGeneratableType
     {

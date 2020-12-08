@@ -1,11 +1,10 @@
-﻿using GraphQL.Types;
+﻿using GraphQL.Tools.Generator;
+using GraphQL.Tools.Generator.Base;
+using GraphQL.Tools.Generator.Extractors;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -14,100 +13,48 @@ namespace GraphQL.Tools.Generators
     [Generator]
     internal class GraphqlCodeGenerator : ISourceGenerator
     {
-        private const string @Namespace = "GraphqlCodeGenerator";
-        private const string AttributeName = "GenerateGraphqlCodesAttribute";
-        private const string AttributeBody = @"
-            using System;
-            namespace GraphqlCodeGenerator
-            {
-                [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-                public sealed class GenerateGraphqlCodesAttribute : Attribute { }
-            }
-        ";
-
-        private readonly string _fullAttributeName = $"{@Namespace}.{AttributeName}";
-
         public void Initialize(GeneratorInitializationContext context)
         {
-            context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
         }
 
         public void Execute(GeneratorExecutionContext context)
         {
-            // add the attribute text
-            context.AddSource(AttributeName, SourceText.From(AttributeBody, Encoding.UTF8));
-
-            // retreive the populated receiver 
-            if (context.SyntaxReceiver is not SyntaxReceiver receiver)
-            {
-                return;
-            }
-
-            var options = (context.Compilation as CSharpCompilation)?.SyntaxTrees[0].Options as CSharpParseOptions;
-            var compilation = context.Compilation
-                .AddSyntaxTrees(CSharpSyntaxTree
-                    .ParseText(SourceText
-                        .From(AttributeBody, Encoding.UTF8), options));
-
-            var attributeSymbol = compilation.GetTypeByMetadataName(_fullAttributeName);
-
-            foreach (var candidate in receiver.CandidateClasses)
-            {
-                var model = compilation.GetSemanticModel(candidate.SyntaxTree);
-                var typeSymbol = model.GetDeclaredSymbol(candidate);
-                if (typeSymbol != null && typeSymbol.GetAttributes().Any(ad =>
-                    ad.AttributeClass != null && ad.AttributeClass.Equals(attributeSymbol, SymbolEqualityComparer.Default)))
-                {
-                    if (attributeSymbol != null)
-                    {
-                        var namespaceName = typeSymbol.ContainingNamespace.ToDisplayString();
-
-                        var classSource = $@"
-                            namespace {namespaceName}
+            var classSource = $@"
+                            #nullable enable annotations
+                            namespace GraphQL.Tools
                             {{
-                                public partial class GraphqlGeneratedCodes
+                                public partial class Generated
                                 {{
-                                    {GraphqlQuery.GetQuery()}
+                                    {GraphqlTypeGenerator.Generate()}
                                 }}
                             }}
                         ";
 
-                        context.AddSource(
-                            $"{typeSymbol.ContainingNamespace.ToDisplayString()}.{typeSymbol.Name}",
-                            SourceText.From(classSource, Encoding.UTF8));
-                    }
-                }
-            }
+            context.AddSource(
+                $"GraphQL.Tools.g.cs",
+                SourceText.From(classSource, Encoding.UTF8));
         }
     }
 
-    public static class GraphqlQuery
+    public static class GraphqlTypeGenerator
     {
-        public static string GetQuery()
+        public static string Generate()
         {
-            Debugger.Launch();
-            var schemaText = File.ReadAllText(@"D:\Alibaba\Zii\galoo\src\GalooBaba\src\Schemas\BabaMock\Sample.gql");
-            var schema = Schema.For(schemaText);
-
-            // TODO: Add aditional namespaces param
-            foreach (var graphqlType in schema.AllTypes)
+            var typeExtractors = new List<IGeneratableTypeExtractor>
             {
+                new ClassExtractor(),
+                new InterfaceExtractor(),
+                new EnumExtractor(),
+                new UnionExtractor(),
+                new ArgumentExtractor()
+            };
 
-            }
+            var generatableTypeProvider = new GeneratableTypeProvider(typeExtractors);
+            List<IGeneratableType> generatableTypes = generatableTypeProvider.FromSchemaFilePath(@"D:\Alibaba\Zii\galoo\src\GalooBaba\src\Schemas\BabaMock\Sample.gql");
 
-            return "public int Age { get; set; } = 10;";
-        }
-    }
+            IEnumerable<string> generatedTypes = generatableTypes.Select(type => type.ToString());
 
-    internal class SyntaxReceiver : ISyntaxReceiver
-    {
-        internal List<TypeDeclarationSyntax> CandidateClasses { get; } = new List<TypeDeclarationSyntax>();
-
-        public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
-        {
-            if (syntaxNode is ClassDeclarationSyntax classDeclarationSyntax
-                && classDeclarationSyntax.AttributeLists.Any())
-                CandidateClasses.Add(classDeclarationSyntax);
+            return string.Join(Environment.NewLine, generatedTypes);
         }
     }
 }

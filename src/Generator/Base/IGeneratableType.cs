@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Starwars.Generator.Base
+namespace GraphQL.Tools.Generator.Base
 {
     public interface IGeneratableType
     {

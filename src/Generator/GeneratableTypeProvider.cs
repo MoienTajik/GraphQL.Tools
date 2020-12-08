@@ -1,14 +1,14 @@
-﻿using GraphQL.Types;
-using Starwars.Generator.Base;
-using Starwars.Generator.Extractors;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using GraphQL.Tools.Generator.Base;
+using GraphQL.Tools.Generator.Extractors;
+using GraphQL.Types;
 
-namespace Starwars.Generator
+namespace GraphQL.Tools.Generator
 {
     /// <summary>
     /// This class will extract generatable types from GraphQL schema based on specified extractors.
@@ -62,25 +62,6 @@ namespace Starwars.Generator
                 throw new FileNotFoundException("No schema with provided path was found.", schemaFilePath);
 
             var schemaText = File.ReadAllText(schemaFilePath);
-            if (string.IsNullOrWhiteSpace(schemaText))
-                throw new ArgumentNullException(nameof(schemaText), "Schema text could not be null or empty.");
-
-            ISchema schema = Schema.For(schemaText);
-
-            return FromSchema(schema);
-        }
-
-        /// <summary>
-        /// This method extracts generatable types from <paramref name="schemaFilePath"/>.
-        /// </summary>
-        /// <param name="schemaFilePath">GraphQL schema file path</param>
-        /// <returns>Generatable types from schema file path.</returns>
-        public async Task<List<IGeneratableType>> FromSchemaFilePathAsync(string schemaFilePath)
-        {
-            if (File.Exists(schemaFilePath) is not true)
-                throw new FileNotFoundException("No schema with provided path was found.", schemaFilePath);
-
-            var schemaText = await File.ReadAllTextAsync(schemaFilePath);
             if (string.IsNullOrWhiteSpace(schemaText))
                 throw new ArgumentNullException(nameof(schemaText), "Schema text could not be null or empty.");
 

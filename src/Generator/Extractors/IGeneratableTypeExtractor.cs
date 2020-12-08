@@ -1,8 +1,8 @@
-﻿using GraphQL.Types;
-using Starwars.Generator.Base;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using GraphQL.Tools.Generator.Base;
+using GraphQL.Types;
 
-namespace Starwars.Generator.Extractors
+namespace GraphQL.Tools.Generator.Extractors
 {
     public interface IGeneratableTypeExtractor
     {

@@ -1,6 +1,4 @@
-﻿using GraphQL;
-
-namespace Starwars.Generator.Base
+﻿namespace GraphQL.Tools.Generator.Base
 {
     public class Property : IMember
     {
