@@ -1,11 +1,13 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using GraphQL.Types;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
-using HotChocolate;
 
 namespace GraphQL.Tools.Generators
 {
@@ -32,13 +34,6 @@ namespace GraphQL.Tools.Generators
 
         public void Execute(GeneratorExecutionContext context)
         {
-            //Debugger.Launch();
-            //if (!context.Compilation.ReferencedAssemblyNames
-            //    .Any(ai => ai.Name.Equals("HotChocolate.Types", StringComparison.OrdinalIgnoreCase)))
-            //{
-            //    throw new InvalidOperationException("HotChocolate.Types is not provided.");
-            //}
-
             // add the attribute text
             context.AddSource(AttributeName, SourceText.From(AttributeBody, Encoding.UTF8));
 
@@ -90,16 +85,15 @@ namespace GraphQL.Tools.Generators
     {
         public static string GetQuery()
         {
-            var schema = SchemaBuilder.New()
-                .AddDocumentFromString(
-                    @"
-                        type Query {
-                            hello: String
-                    }")
-                .AddResolver("Query", "hello", () => "world")
-                .Create();
+            Debugger.Launch();
+            var schemaText = File.ReadAllText(@"D:\Alibaba\Zii\galoo\src\GalooBaba\src\Schemas\BabaMock\Sample.gql");
+            var schema = Schema.For(schemaText);
 
+            // TODO: Add aditional namespaces param
+            foreach (var graphqlType in schema.AllTypes)
+            {
 
+            }
 
             return "public int Age { get; set; } = 10;";
         }

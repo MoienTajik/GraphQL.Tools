@@ -2,20 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.9.0-1.final" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2" PrivateAssets="all">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.8.0" Pack="false" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- Generator dependencies -->
-    <PackageReference Include="HotChocolate" Version="11.0.1" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="GraphQL" Version="3.1.6" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="GraphQL-Parser" Version="5.3.3" GeneratePathProperty="true" PrivateAssets="all" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -24,8 +21,8 @@
 
   <Target Name="GetDependencyTargetPaths">
     <ItemGroup>
-      <TargetPathWithTargetPlatformMoniker Include="$(PKGHotChocolate)\lib\netstandard2.0\HotChocolate.dll" IncludeRuntimeDependency="false" />
+      <TargetPathWithTargetPlatformMoniker Include="$(PKGGraphQL)\lib\netstandard2.0\GraphQL.dll" IncludeRuntimeDependency="false" />
+      <TargetPathWithTargetPlatformMoniker Include="$(PKGGraphQL-Parser)\lib\netstandard2.0\GraphQL-Parser.dll" IncludeRuntimeDependency="false" />
     </ItemGroup>
   </Target>
-
 </Project>
