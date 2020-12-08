@@ -1,5 +1,8 @@
 <Project>
   <PropertyGroup>
     <LangVersion>Preview</LangVersion>
+    <Nullable>enable</Nullable>
+    <WarningAsErrors>nullable</WarningAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 </Project>

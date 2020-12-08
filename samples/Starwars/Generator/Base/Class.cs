@@ -9,13 +9,13 @@ namespace Starwars.Generator.Base
         public Class(string name)
         {
             Name = name;
-            Properties = new List<Property>();
+            Properties = new List<IMember>();
             Interfaces = new List<string>();
         }
 
         public string Name { get; }
 
-        public List<Property> Properties { get; }
+        public List<IMember> Properties { get; }
 
         public List<string> Interfaces { get; }
 

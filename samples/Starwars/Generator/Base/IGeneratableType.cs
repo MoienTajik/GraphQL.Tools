@@ -6,6 +6,6 @@ namespace Starwars.Generator.Base
     {
         string Name { get; }
 
-        List<Property> Properties { get; }
+        List<IMember> Properties { get; }
     }
 }

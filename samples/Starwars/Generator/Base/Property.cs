@@ -1,19 +1,34 @@
-﻿namespace Starwars.Generator.Base
+﻿using GraphQL;
+
+namespace Starwars.Generator.Base
 {
-    public class Property
+    public class Property : IMember
     {
-        public Property(string type, string name, bool isNullable)
+        public Property(string name, string type, bool isNullable)
         {
-            Type = type;
-            Name = name;
+            Name = name.ToPascalCase();
+            Type = ConvertGraphqlScalarNameToClrTypeName(type);
             IsNullable = isNullable;
         }
 
-        public string Type { get; }
-
         public string Name { get; }
 
+        public string Type { get; }
+
         public bool IsNullable { get; set; }
+
+        private static string ConvertGraphqlScalarNameToClrTypeName(string propertyType)
+        {
+            return propertyType switch
+            {
+                "Int" => "int",
+                "Float" => "float",
+                "String" => "string",
+                "Boolean" => "bool",
+                "ID" => "Guid",
+                _ => propertyType
+            };
+        }
 
         public override string ToString()
         {
