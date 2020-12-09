@@ -1,14 +1,14 @@
-﻿using System;
+﻿using GraphQL.Tools.Generator;
+using GraphQL.Tools.Generator.Base;
+using GraphQL.Tools.Generator.Visitors;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
-using GraphQL.Tools.Generator;
-using GraphQL.Tools.Generator.Base;
-using GraphQL.Tools.Generator.Visitors;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
 
 namespace GraphQL.Tools
 {
@@ -21,32 +21,22 @@ namespace GraphQL.Tools
 
         public void Execute(GeneratorExecutionContext context)
         {
-            List<string> graphqlSchemaFilePaths = new();
-            foreach (var file in context.AdditionalFiles)
-            {
-                if (context.AnalyzerConfigOptions.GetOptions(file)
-                    .TryGetValue("build_metadata.additionalfiles.GraphQLSchema", out string? isGraphQLSchema) &&
-                    isGraphQLSchema.Equals("true", StringComparison.OrdinalIgnoreCase))
-                {
-                    var validGraphqlFileExtensions = new string[2] { ".gql", ".graphql" };
-                    var fileExtension = Path.GetExtension(file.Path);
+            var generationContexts = GetGenerationContexts(context);
 
-                    if (validGraphqlFileExtensions.Contains(fileExtension, StringComparer.OrdinalIgnoreCase))
-                    {
-                        graphqlSchemaFilePaths.Add(file.Path);
-                    }
-                }
-            }
-
-            if (graphqlSchemaFilePaths.Any())
+            if (generationContexts.Any())
             {
+                var namespaces = string.Join(Environment.NewLine, generationContexts.SelectMany(context => context.AdditionalNamespaces));
+                var classBody = string.Join(Environment.NewLine, generationContexts.Select(GenerateGraphQLTypes));
+
                 var classSource = $@"
+{namespaces}
+
 #nullable enable annotations
 namespace GraphQL.Tools
 {{
     public partial class Generated
     {{
-        {string.Join(Environment.NewLine, graphqlSchemaFilePaths.Select(GraphqlTypeGenerator.Generate))}
+        {classBody}
     }}
 }}
 ";
@@ -56,23 +46,64 @@ namespace GraphQL.Tools
                     SourceText.From(classSource, Encoding.UTF8));
             }
         }
-    }
 
-    public static class GraphqlTypeGenerator
-    {
-        public static string Generate(string schemaFilePath)
+        private static IEnumerable<GenerationContext> GetGenerationContexts(GeneratorExecutionContext context)
         {
-            var typeExtractors = new List<IGeneratableTypeVisitor>
+            foreach (AdditionalText file in context.AdditionalFiles)
             {
-                new ClassVisitor(),
-                new InterfaceVisitor(),
-                new EnumVisitor(),
-                new UnionVisitor(),
-                new ArgumentVisitor()
-            };
+                var validGraphqlFileExtensions = new string[2] { ".gql", ".graphql" };
+                var fileExtension = Path.GetExtension(file.Path);
 
-            var generatableTypeProvider = new GeneratableTypeProvider(typeExtractors);
-            ImmutableHashSet<IGeneratableType> generatableTypes = generatableTypeProvider.FromSchemaFilePath(schemaFilePath);
+                if (validGraphqlFileExtensions.Contains(fileExtension, StringComparer.OrdinalIgnoreCase))
+                {
+                    var visitors = FindVisitors(context, file);
+                    var additionalNamespaces = FindAdditionalNamespaces(context, file);
+
+                    yield return new GenerationContext(file.Path, visitors, additionalNamespaces);
+                }
+            }
+        }
+
+        private static IEnumerable<IGeneratableTypeVisitor> FindVisitors(GeneratorExecutionContext context, AdditionalText additionalText)
+        {
+            context.AnalyzerConfigOptions
+                                .GetOptions(additionalText)
+                                .TryGetValue("build_metadata.graphql.visitors", out string? commaSeparatedVisitors);
+
+            if (string.IsNullOrWhiteSpace(commaSeparatedVisitors))
+                return new List<IGeneratableTypeVisitor>
+                {
+                    new ClassVisitor(),
+                    new InterfaceVisitor(),
+                    new EnumVisitor(),
+                    new UnionVisitor(),
+                    new ArgumentVisitor()
+                };
+
+            var userDefinedVisitors = commaSeparatedVisitors!.Trim().Split(',');
+            return userDefinedVisitors.Select(VisitorFactory.Create);
+        }
+
+        private static string[] FindAdditionalNamespaces(GeneratorExecutionContext context, AdditionalText additionalText)
+        {
+            context.AnalyzerConfigOptions
+                .GetOptions(additionalText)
+                .TryGetValue("build_metadata.graphql.additionalnamespaces", out string? commaSeparatedAdditionalNamespaces);
+
+            if (commaSeparatedAdditionalNamespaces is null)
+                return new string[] { };
+
+            return commaSeparatedAdditionalNamespaces
+                .Trim()
+                .Split(',')
+                .Select(additionalNamespace => $"using {additionalNamespace};")
+                .ToArray();
+        }
+
+        private static string GenerateGraphQLTypes(GenerationContext generationContext)
+        {
+            var generatableTypeProvider = new GeneratableTypeProvider(generationContext.Visitors);
+            ImmutableHashSet<IGeneratableType> generatableTypes = generatableTypeProvider.FromSchemaFilePath(generationContext.GraphqlSchemaFilePath);
 
             IEnumerable<string> generatedTypes = generatableTypes.Select(type => type.ToString());
 

@@ -1,6 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project>
   <ItemGroup>
-    <CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="GraphQLSchema" />
+    <!--<CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="GraphQLSchema" />-->
+    <CompilerVisibleItemMetadata Include="GraphQL" MetadataName="Visitors" />
+    <CompilerVisibleItemMetadata Include="GraphQL" MetadataName="AdditionalNamespaces" />
   </ItemGroup>
+
+  <Target Name="_InjectGraphQLAdditionalFiles"
+          BeforeTargets="PrepareForBuild;CompileDesignTime;GenerateMSBuildEditorConfigFileShouldRun"
+          DependsOnTargets="PrepareResourceNames">
+    <ItemGroup>
+      <GraphQLConstant>
+        <Area>$([MSBuild]::ValueOrDefault('%(RelativeDir)', '').Replace('\', '.').Replace('/', '.'))%(Filename)</Area>
+        <Value>%(RelativeDir)%(Filename)%(Extension)</Value>
+      </GraphQLConstant>
+
+      <Constant Include="@(GraphQLConstant -> '%(Area)')" Value="%(GraphQLConstant.Visitors)" Comment="%(GraphQLConstant.AdditionalNamespaces)" />
+      <AdditionalFiles Include="@(GraphQL)" SourceItemType="GraphQL" />
+    </ItemGroup>
+  </Target>
 </Project>
