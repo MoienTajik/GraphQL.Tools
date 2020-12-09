@@ -1,4 +1,6 @@
-﻿namespace GraphQL.Tools.Generator.Base
+﻿using System;
+
+namespace GraphQL.Tools.Generator.Base
 {
     public class Property : IMember
     {
@@ -26,6 +28,11 @@
                 "ID" => "Guid",
                 _ => propertyType
             };
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name, Type);
         }
 
         public override string ToString()

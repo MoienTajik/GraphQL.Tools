@@ -9,6 +9,11 @@
 
         public string Value { get; }
 
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
+        }
+
         public override string ToString()
         {
             return Value;

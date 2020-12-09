@@ -4,10 +4,10 @@ using GraphQL.Tools.Generator.Base;
 using GraphQL.Types;
 using GraphQLParser.AST;
 
-namespace GraphQL.Tools.Generator.Extractors
+namespace GraphQL.Tools.Generator.Visitors
 {
     /// <summary>
-    /// This extractor will extract GraphQL field arguments as a class.
+    /// This visitor will extract GraphQL field arguments as a class.
     /// </summary>
     /// <example>
     /// GraphQL schema:
@@ -25,10 +25,12 @@ namespace GraphQL.Tools.Generator.Extractors
     /// }
     /// </code>
     /// </example>
-    public class ArgumentExtractor : IGeneratableTypeExtractor
+    public class ArgumentVisitor : IGeneratableTypeVisitor
     {
-        public IEnumerable<IGeneratableType> Extract(IEnumerable<IGraphType> graphTypes)
+        public HashSet<IGeneratableType> Visit(IEnumerable<IGraphType> graphTypes)
         {
+            var @classes = new HashSet<IGeneratableType>();
+
             foreach (ObjectGraphType objectGraphType in graphTypes.Where(type => type is ObjectGraphType))
             {
                 var className = objectGraphType.Name; // ex: Query
@@ -58,11 +60,13 @@ namespace GraphQL.Tools.Generator.Extractors
                             var isNullable = (argument.Metadata.First().Value as GraphQLInputValueDefinition)!.Type!.Kind != ASTNodeKind.NonNullType;
                             @class.Properties.Add(new Property(propertyName, propertyType, isNullable));
 
-                            yield return @class;
+                            @classes.Add(@class);
                         }
                     }
                 }
             }
+
+            return @classes;
         }
     }
 }

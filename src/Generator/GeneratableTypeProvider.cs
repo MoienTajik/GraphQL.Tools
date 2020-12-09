@@ -1,30 +1,30 @@
-﻿using System;
+﻿using GraphQL.Tools.Generator.Base;
+using GraphQL.Types;
+using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
-using GraphQL.Tools.Generator.Base;
-using GraphQL.Tools.Generator.Extractors;
-using GraphQL.Types;
+using GraphQL.Tools.Generator.Visitors;
 
 namespace GraphQL.Tools.Generator
 {
     /// <summary>
-    /// This class will extract generatable types from GraphQL schema based on specified extractors.
+    /// This class will extract generatable types from GraphQL schema based on specified visitors.
     /// </summary>
     public class GeneratableTypeProvider
     {
-        private readonly IEnumerable<IGeneratableTypeExtractor> _generatableTypeExtractors;
+        private readonly IEnumerable<IGeneratableTypeVisitor> _generatableTypeExtractors;
 
-        /// <param name="generatableTypeExtractors">The extractors to use for lookup.</param>
-        public GeneratableTypeProvider(params IGeneratableTypeExtractor[] generatableTypeExtractors)
-            : this(generatableTypeExtractors as IEnumerable<IGeneratableTypeExtractor>)
+        /// <param name="generatableTypeExtractors">The visitors to use for lookup.</param>
+        public GeneratableTypeProvider(params IGeneratableTypeVisitor[] generatableTypeExtractors)
+            : this(generatableTypeExtractors as IEnumerable<IGeneratableTypeVisitor>)
         {
         }
 
-        /// <param name="generatableTypeExtractors">The extractors to use for lookup.</param>
-        public GeneratableTypeProvider(IEnumerable<IGeneratableTypeExtractor> generatableTypeExtractors)
+        /// <param name="generatableTypeExtractors">The visitors to use for lookup.</param>
+        public GeneratableTypeProvider(IEnumerable<IGeneratableTypeVisitor> generatableTypeExtractors)
         {
             _generatableTypeExtractors = generatableTypeExtractors;
         }
@@ -34,7 +34,7 @@ namespace GraphQL.Tools.Generator
         /// </summary>
         /// <param name="schema">GraphQL schema</param>
         /// <returns>Generatable types from ISchema.</returns>
-        public List<IGeneratableType> FromSchema(ISchema schema)
+        public ImmutableHashSet<IGeneratableType> FromSchema(ISchema schema)
         {
             if (schema is null)
                 throw new ArgumentNullException(nameof(schema), "Schema could not be null.");
@@ -47,8 +47,8 @@ namespace GraphQL.Tools.Generator
                 throw new InvalidOperationException($"Get `_additionalInstances` returned invalid type.");
 
             return _generatableTypeExtractors
-                .SelectMany(extractor => extractor.Extract(graphTypes))
-                .ToList();
+                .SelectMany(visitor => visitor.Visit(graphTypes))
+                .ToImmutableHashSet();
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace GraphQL.Tools.Generator
         /// </summary>
         /// <param name="schemaFilePath">GraphQL schema file path</param>
         /// <returns>Generatable types from schema file path.</returns>
-        public List<IGeneratableType> FromSchemaFilePath(string schemaFilePath)
+        public ImmutableHashSet<IGeneratableType> FromSchemaFilePath(string schemaFilePath)
         {
             if (File.Exists(schemaFilePath) is not true)
                 throw new FileNotFoundException("No schema with provided path was found.", schemaFilePath);
@@ -75,7 +75,7 @@ namespace GraphQL.Tools.Generator
         /// </summary>
         /// <param name="schemaText">GraphQL schema content</param>
         /// <returns>Generatable types from schema text content.</returns>
-        public List<IGeneratableType> FromSchemaText(string schemaText)
+        public ImmutableHashSet<IGeneratableType> FromSchemaText(string schemaText)
         {
             if (string.IsNullOrWhiteSpace(schemaText))
                 throw new ArgumentNullException(nameof(schemaText), "Schema text could not be null or empty.");

@@ -4,10 +4,10 @@ using GraphQL.Tools.Generator.Base;
 using GraphQL.Types;
 using GraphQLParser.AST;
 
-namespace GraphQL.Tools.Generator.Extractors
+namespace GraphQL.Tools.Generator.Visitors
 {
     /// <summary>
-    /// This extractor will extract GraphQL interfaces.
+    /// This visitor will extract GraphQL interfaces.
     /// </summary>
     /// <example>
     /// GraphQL schema:
@@ -40,10 +40,12 @@ namespace GraphQL.Tools.Generator.Extractors
     /// }
     /// </code>
     /// </example>
-    public class InterfaceExtractor : IGeneratableTypeExtractor
+    public class InterfaceVisitor : IGeneratableTypeVisitor
     {
-        public IEnumerable<IGeneratableType> Extract(IEnumerable<IGraphType> graphTypes)
+        public HashSet<IGeneratableType> Visit(IEnumerable<IGraphType> graphTypes)
         {
+            var @interfaces = new HashSet<IGeneratableType>();
+
             foreach (InterfaceGraphType interfaceGraphType in graphTypes.Where(type => type is InterfaceGraphType))
             {
                 var interfaceName = interfaceGraphType.Name;
@@ -67,8 +69,10 @@ namespace GraphQL.Tools.Generator.Extractors
                     @interface.Properties.Add(new Property(propertyName, propertyType, isNullable));
                 }
 
-                yield return @interface;
+                @interfaces.Add(@interface);
             }
+
+            return @interfaces;
         }
     }
 }

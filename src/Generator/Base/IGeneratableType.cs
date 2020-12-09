@@ -6,6 +6,6 @@ namespace GraphQL.Tools.Generator.Base
     {
         string Name { get; }
 
-        List<IMember> Properties { get; }
+        HashSet<IMember> Properties { get; }
     }
 }

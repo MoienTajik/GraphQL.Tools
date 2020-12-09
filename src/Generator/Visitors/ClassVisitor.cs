@@ -4,10 +4,10 @@ using GraphQL.Tools.Generator.Base;
 using GraphQL.Types;
 using GraphQLParser.AST;
 
-namespace GraphQL.Tools.Generator.Extractors
+namespace GraphQL.Tools.Generator.Visitors
 {
     /// <summary>
-    /// This extractor will extract GraphQL fields as classes.
+    /// This visitor will extract GraphQL fields as classes.
     /// </summary>
     /// <example>
     /// GraphQL schema:
@@ -33,10 +33,12 @@ namespace GraphQL.Tools.Generator.Extractors
     /// }
     /// </code>
     /// </example>
-    public class ClassExtractor : IGeneratableTypeExtractor
+    public class ClassVisitor : IGeneratableTypeVisitor
     {
-        public IEnumerable<IGeneratableType> Extract(IEnumerable<IGraphType> graphTypes)
+        public HashSet<IGeneratableType> Visit(IEnumerable<IGraphType> graphTypes)
         {
+            var @classes = new HashSet<IGeneratableType>();
+
             foreach (ObjectGraphType objectGraphType in graphTypes.Where(type => type is ObjectGraphType))
             {
                 var className = objectGraphType.Name;
@@ -62,8 +64,10 @@ namespace GraphQL.Tools.Generator.Extractors
 
                 ExtractImplementedInterfaces(objectGraphType, @class);
 
-                yield return @class;
+                @classes.Add(@class);
             }
+
+            return @classes;
         }
 
         private static void ExtractImplementedInterfaces(ObjectGraphType objectGraphType, Class @class)

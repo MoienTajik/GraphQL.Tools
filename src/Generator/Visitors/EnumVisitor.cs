@@ -3,10 +3,10 @@ using System.Linq;
 using GraphQL.Tools.Generator.Base;
 using GraphQL.Types;
 
-namespace GraphQL.Tools.Generator.Extractors
+namespace GraphQL.Tools.Generator.Visitors
 {
     /// <summary>
-    /// This extractor will extract GraphQL enums.
+    /// This visitor will extract GraphQL enums.
     /// </summary>
     /// <example>
     /// GraphQL schema:
@@ -28,10 +28,12 @@ namespace GraphQL.Tools.Generator.Extractors
     /// }
     /// </code>
     /// </example>
-    public class EnumExtractor : IGeneratableTypeExtractor
+    public class EnumVisitor : IGeneratableTypeVisitor
     {
-        public IEnumerable<IGeneratableType> Extract(IEnumerable<IGraphType> graphTypes)
+        public HashSet<IGeneratableType> Visit(IEnumerable<IGraphType> graphTypes)
         {
+            var @enums = new HashSet<IGeneratableType>();
+
             foreach (EnumerationGraphType enumGraphType in graphTypes.Where(type => type is EnumerationGraphType))
             {
                 var @enum = new Enum(enumGraphType.Name);
@@ -43,8 +45,10 @@ namespace GraphQL.Tools.Generator.Extractors
                     @enum.Properties.Add(new EnumValue(value));
                 }
 
-                yield return @enum;
+                @enums.Add(@enum);
             }
+
+            return @enums;
         }
     }
 }

@@ -1,15 +1,16 @@
-﻿using GraphQL.Tools.Generator;
-using GraphQL.Tools.Generator.Base;
-using GraphQL.Tools.Generator.Extractors;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
+using GraphQL.Tools.Generator;
+using GraphQL.Tools.Generator.Base;
+using GraphQL.Tools.Generator.Visitors;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 
-namespace GraphQL.Tools.Generators
+namespace GraphQL.Tools
 {
     [Generator]
     internal class GraphqlCodeGenerator : ISourceGenerator
@@ -40,15 +41,15 @@ namespace GraphQL.Tools.Generators
             if (graphqlSchemaFilePaths.Any())
             {
                 var classSource = $@"
-                            #nullable enable annotations
-                            namespace GraphQL.Tools
-                            {{
-                                public partial class Generated
-                                {{
-                                    {graphqlSchemaFilePaths.Select(GraphqlTypeGenerator.Generate)}
-                                }}
-                            }}
-                        ";
+#nullable enable annotations
+namespace GraphQL.Tools
+{{
+    public partial class Generated
+    {{
+        {string.Join(Environment.NewLine, graphqlSchemaFilePaths.Select(GraphqlTypeGenerator.Generate))}
+    }}
+}}
+";
 
                 context.AddSource(
                     $"GraphQL.Tools.g.cs",
@@ -61,17 +62,17 @@ namespace GraphQL.Tools.Generators
     {
         public static string Generate(string schemaFilePath)
         {
-            var typeExtractors = new List<IGeneratableTypeExtractor>
+            var typeExtractors = new List<IGeneratableTypeVisitor>
             {
-                new ClassExtractor(),
-                new InterfaceExtractor(),
-                new EnumExtractor(),
-                new UnionExtractor(),
-                new ArgumentExtractor()
+                new ClassVisitor(),
+                new InterfaceVisitor(),
+                new EnumVisitor(),
+                new UnionVisitor(),
+                new ArgumentVisitor()
             };
 
             var generatableTypeProvider = new GeneratableTypeProvider(typeExtractors);
-            List<IGeneratableType> generatableTypes = generatableTypeProvider.FromSchemaFilePath(schemaFilePath);
+            ImmutableHashSet<IGeneratableType> generatableTypes = generatableTypeProvider.FromSchemaFilePath(schemaFilePath);
 
             IEnumerable<string> generatedTypes = generatableTypes.Select(type => type.ToString());
 

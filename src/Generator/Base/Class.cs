@@ -9,40 +9,46 @@ namespace GraphQL.Tools.Generator.Base
         public Class(string name)
         {
             Name = name;
-            Properties = new List<IMember>();
-            Interfaces = new List<string>();
+            Properties = new HashSet<IMember>();
+            Interfaces = new HashSet<string>();
         }
 
         public string Name { get; }
 
-        public List<IMember> Properties { get; }
+        public HashSet<IMember> Properties { get; }
 
-        public List<string> Interfaces { get; }
+        public HashSet<string> Interfaces { get; }
 
         public bool HasInterface => Interfaces.Any();
 
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
+
         public override string ToString()
         {
-            var properties = string.Join(Environment.NewLine, Properties.Select(prop => prop.ToString()));
+            var separator = $"            {Environment.NewLine}";
+            var properties = string.Join(separator, Properties.Select(prop => prop.ToString()));
 
             if (HasInterface)
             {
                 var interfaces = string.Join(", ", Interfaces);
                 return $@"
-                public class {Name} : {interfaces}
-                {{
-                    {properties}
-                }}
-                ";
+        public class {Name} : {interfaces}
+        {{
+{properties}
+        }}
+        ";
             }
             else
             {
                 return $@"
-                public class {Name}
-                {{
-                    {properties}
-                }}
-                ";
+        public class {Name}
+        {{
+{properties}
+        }}
+        ";
             }
         }
     }

@@ -3,10 +3,10 @@ using System.Linq;
 using GraphQL.Tools.Generator.Base;
 using GraphQL.Types;
 
-namespace GraphQL.Tools.Generator.Extractors
+namespace GraphQL.Tools.Generator.Visitors
 {
     /// <summary>
-    /// This extractor will extract GraphQL unions.
+    /// This visitor will extract GraphQL unions.
     /// </summary>
     /// <example>
     /// GraphQL schema:
@@ -41,10 +41,12 @@ namespace GraphQL.Tools.Generator.Extractors
     /// }
     /// </code>
     /// </example>
-    public class UnionExtractor : IGeneratableTypeExtractor
+    public class UnionVisitor : IGeneratableTypeVisitor
     {
-        public IEnumerable<IGeneratableType> Extract(IEnumerable<IGraphType> graphTypes)
+        public HashSet<IGeneratableType> Visit(IEnumerable<IGraphType> graphTypes)
         {
+            var @classes = new HashSet<IGeneratableType>();
+
             foreach (UnionGraphType unionGraphType in graphTypes.Where(type => type is UnionGraphType))
             {
                 var @class = new Class(unionGraphType.Name);
@@ -57,8 +59,10 @@ namespace GraphQL.Tools.Generator.Extractors
                     @class.Properties.Add(new Property(propertyName, propertyType, true));
                 }
 
-                yield return @class;
+                @classes.Add(@class);
             }
+
+            return @classes;
         }
     }
 }

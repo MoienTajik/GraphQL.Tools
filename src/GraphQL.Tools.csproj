@@ -11,6 +11,7 @@
     <!-- Generator dependencies -->
     <PackageReference Include="GraphQL" Version="3.1.6" GeneratePathProperty="true" PrivateAssets="all" />
     <PackageReference Include="GraphQL-Parser" Version="5.3.3" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" GeneratePathProperty="true" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +30,7 @@
     <ItemGroup>
       <TargetPathWithTargetPlatformMoniker Include="$(PKGGraphQL)\lib\netstandard2.0\GraphQL.dll" IncludeRuntimeDependency="false" />
       <TargetPathWithTargetPlatformMoniker Include="$(PKGGraphQL-Parser)\lib\netstandard2.0\GraphQL-Parser.dll" IncludeRuntimeDependency="false" />
+      <TargetPathWithTargetPlatformMoniker Include="$(PKGMicrosoft_Bcl_HashCode)\lib\netstandard2.0\Microsoft.Bcl.HashCode.dll" IncludeRuntimeDependency="false" />
     </ItemGroup>
   </Target>
 </Project>
