@@ -4,15 +4,7 @@
     {
         static void Main()
         {
-            //var gql = new GraphqlGeneratedCodes();
-
-            // TODO: Add additional namespace param
+            //var graphqlGenerated = new GraphQL.Tools.Generated();
         }
-    }
-
-    //[GenerateGraphqlCodes]
-    public partial class GraphqlGeneratedCodes
-    {
-
     }
 }

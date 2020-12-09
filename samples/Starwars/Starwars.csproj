@@ -15,4 +15,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\GraphQL.Tools.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="False" />
   </ItemGroup>
+
+  <!-- Manually reference the generator props because we locally reference the generator. When added via NuGet this happens automatically -->
+  <Import Project="..\..\src\GraphQL.Tools.props" />
+
+  <ItemGroup>
+    <AdditionalFiles Include="D:\Alibaba\Zii\galoo\src\GalooBaba\src\Schemas\BabaMock\Sample.gql" GraphQLSchema="true" />
+  </ItemGroup>
 </Project>
