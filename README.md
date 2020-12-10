@@ -1,7 +1,7 @@
 # GraphQL.Tools
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
-[![NuGet](https://img.shields.io/nuget/vpre/mediatr.svg)](https://www.nuget.org/packages/graphql.tools)
+[![NuGet](https://img.shields.io/nuget/vpre/GraphQL.Tools.svg)](https://www.nuget.org/packages/GraphQL.Tools)
 
 GraphQL.Tools is a GraphQL to C# compiler (code-generator) which turns your GraphQL schema to a set of C# `classes`, `interfaces`, and `enums`.
 
@@ -16,7 +16,7 @@ GraphQL.Tools is a GraphQL to C# compiler (code-generator) which turns your Grap
 ## Getting Started
 
 ### 1. Installing GraphQL.Tools
-You can install GraphQL.Tools with [NuGet Package Manager Console](https://www.nuget.org/packages/MediatR):
+You can install GraphQL.Tools with [NuGet Package Manager Console](https://www.nuget.org/packages/GraphQL.Tools):
 
     Install-Package GraphQL.Tools
     
