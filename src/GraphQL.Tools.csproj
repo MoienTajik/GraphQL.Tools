@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageTags>GraphQL, GraphQL-Compiler, GraphQL-Code-Generator, GraphQL-Source-Generator, Source-Generator</PackageTags>
+    <PackageIcon>GraphQL.png</PackageIcon>
+    <Description>GraphQL.Tools is a GraphQL to C# compiler (code-generator) which turns your GraphQL schema to a set of C# classes, interfaces, and enums.</Description>
+    <Copyright>Moien Tajik</Copyright>
+    <PackageProjectUrl>https://github.com/MoienTajik/GraphQL.Tools</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MoienTajik/GraphQL.Tools</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +23,10 @@
   <ItemGroup>
     <!-- Package the generator in the analyzer directory of the nuget package -->
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="..\GraphQL.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
 
     <!-- Package the props file in nuget -->
     <None Include="GraphQL.Tools.props" Pack="true" PackagePath="build" Visible="false" />
