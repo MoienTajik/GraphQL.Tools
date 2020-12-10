@@ -119,80 +119,80 @@ namespace GraphQL.Tools
 {
     public partial class Generated
     {
-		public class Query
+	public class Query
         {
-			public Simple GetSimple { get; set; }
-			public Simple Simple { get; set; }
-			public Simple[] Simples { get; set; }
-			public Simple[]? NullableSimples { get; set; }
-			public Identity Identity { get; set; }
+		public Simple GetSimple { get; set; }
+		public Simple Simple { get; set; }
+		public Simple[] Simples { get; set; }
+		public Simple[]? NullableSimples { get; set; }
+		public Identity Identity { get; set; }
         }
 
-		// -----------------------------------------------------------
+	// -----------------------------------------------------------
 
-		public class Simple
+	public class Simple
         {
-			public bool Bool { get; set; }
-			public int Int32 { get; set; }
-			public float Float { get; set; }
-			public float Double { get; set; }
-			public string String { get; set; }
+		public bool Bool { get; set; }
+		public int Int32 { get; set; }
+		public float Float { get; set; }
+		public float Double { get; set; }
+		public string String { get; set; }
         }
 
-		// -----------------------------------------------------------
+	// -----------------------------------------------------------
 
-		public class Identity
+	public class Identity
         {
-			public EmailIdentity? EmailIdentity { get; set; }
-			public PhoneNumberIdentity? PhoneNumberIdentity { get; set; }
+		public EmailIdentity? EmailIdentity { get; set; }
+		public PhoneNumberIdentity? PhoneNumberIdentity { get; set; }
         }
 
-		public class EmailIdentity
+	public class EmailIdentity
         {
-			public string Value { get; set; }
+		public string Value { get; set; }
         }
 
-		public class PhoneNumberIdentity
+	public class PhoneNumberIdentity
         {
-			public float Value { get; set; }
+		public float Value { get; set; }
         }
 
-		// -----------------------------------------------------------
+	// -----------------------------------------------------------
 
-		public enum Color
+	public enum Color
         {
-            RED,
-			GREEN,
-			BLUE
+            	RED,
+		GREEN,
+		BLUE
         }
 
-		// -----------------------------------------------------------
+	// -----------------------------------------------------------
 
-		public interface Character
+	public interface Character
         {
-            public int Id { get; set; }
-			public string Name { get; set; }
+            	public int Id { get; set; }
+		public string Name { get; set; }
         }
 
         public class Human : Character
         {
-			public int Id { get; set; }            
-			public string Name { get; set; }
-			public int? TotalCredits { get; set; }
+		public int Id { get; set; }            
+		public string Name { get; set; }
+		public int? TotalCredits { get; set; }
         }
 
         public class Droid : Character
         {
-			public int Id { get; set; }
-			public string Name { get; set; }
-			public string? PrimaryFunction { get; set; }
+		public int Id { get; set; }
+		public string Name { get; set; }
+		public string? PrimaryFunction { get; set; }
         }
 
-		// -----------------------------------------------------------
+	// -----------------------------------------------------------
 
         public class Query_GetSimple_Arguments
         {
-			public string Name { get; set; }
+		public string Name { get; set; }
         }
     }
 }
