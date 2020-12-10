@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GraphQL.Tools.Generator.Base;
+using GraphQL.Tools.Generator.Extensions;
 using GraphQL.Types;
 using GraphQLParser.AST;
 
@@ -46,20 +49,11 @@ namespace GraphQL.Tools.Generator.Visitors
 
                 foreach (FieldType fieldType in objectGraphType.Fields)
                 {
-                    var propertyName = fieldType.Name;
-
-                    var propertyType = "";
-                    if (fieldType.ResolvedType.GetNamedType() is GraphQLTypeReference reference)
-                    {
-                        propertyType = reference.TypeName;
-                    }
-                    else if (fieldType.ResolvedType.GetNamedType() is GraphType type)
-                    {
-                        propertyType = type.Name;
-                    }
-
-                    var isNullable = (fieldType.Metadata.First().Value as GraphQLFieldDefinition)!.Type!.Kind != ASTNodeKind.NonNullType;
-                    @class.Properties.Add(new Property(propertyName, propertyType, isNullable));
+                    @class.Properties
+                        .Add(new Property(fieldType.Name, 
+                            fieldType.GetTypeName(),
+                            fieldType.IsArray(),
+                            fieldType.IsNullable()));
                 }
 
                 ExtractImplementedInterfaces(objectGraphType, @class);

@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using GraphQL.Tools.Generator.Base;
+﻿using GraphQL.Tools.Generator.Base;
+using GraphQL.Tools.Generator.Extensions;
 using GraphQL.Types;
-using GraphQLParser.AST;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace GraphQL.Tools.Generator.Visitors
 {
@@ -43,22 +44,13 @@ namespace GraphQL.Tools.Generator.Visitors
                     {
                         var @class = new Class($"{className}_{fieldName}_Arguments"); // ex: Query_Order_Arguments
 
-                        foreach (var argument in fieldType.Arguments)
+                        foreach (QueryArgument? argument in fieldType.Arguments)
                         {
-                            var propertyName = argument.Name;
-
-                            var propertyType = "";
-                            if (argument.ResolvedType.GetNamedType() is GraphQLTypeReference typeReference)
-                            {
-                                propertyType = typeReference.TypeName;
-                            }
-                            else if (argument.ResolvedType.GetNamedType() is GraphType type)
-                            {
-                                propertyType = type.Name;
-                            }
-
-                            var isNullable = (argument.Metadata.First().Value as GraphQLInputValueDefinition)!.Type!.Kind != ASTNodeKind.NonNullType;
-                            @class.Properties.Add(new Property(propertyName, propertyType, isNullable));
+                            @class.Properties
+                                .Add(new Property(argument.Name,
+                                    argument.GetTypeName(),
+                                    argument.IsArray(),
+                                    argument.IsNullable()));
 
                             @classes.Add(@class);
                         }

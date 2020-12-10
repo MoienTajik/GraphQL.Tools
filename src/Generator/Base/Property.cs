@@ -4,16 +4,19 @@ namespace GraphQL.Tools.Generator.Base
 {
     public class Property : IMember
     {
-        public Property(string name, string type, bool isNullable)
+        public Property(string name, string type, bool isArray, bool isNullable)
         {
             Name = name.ToPascalCase();
             Type = ConvertGraphqlScalarNameToClrTypeName(type);
+            IsArray = isArray;
             IsNullable = isNullable;
         }
 
         public string Name { get; }
 
         public string Type { get; }
+
+        public bool IsArray { get; set; }
 
         public bool IsNullable { get; set; }
 
@@ -37,7 +40,7 @@ namespace GraphQL.Tools.Generator.Base
 
         public override string ToString()
         {
-            return $"public {Type}{(IsNullable ? "?" : "")} {Name} {{ get; set; }}";
+            return $"public {Type}{(IsArray ? "[]" : "")}{(IsNullable ? "?" : "")} {Name} {{ get; set; }}";
         }
     }
 }

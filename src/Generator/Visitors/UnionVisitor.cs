@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using GraphQL.Tools.Generator.Base;
+﻿using GraphQL.Tools.Generator.Base;
 using GraphQL.Types;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace GraphQL.Tools.Generator.Visitors
 {
@@ -55,8 +56,8 @@ namespace GraphQL.Tools.Generator.Visitors
                 {
                     var propertyName = typeReference.TypeName;
                     var propertyType = typeReference.TypeName;
-
-                    @class.Properties.Add(new Property(propertyName, propertyType, true));
+                    
+                    @class.Properties.Add(new Property(propertyName, propertyType, false, true));
                 }
 
                 @classes.Add(@class);
