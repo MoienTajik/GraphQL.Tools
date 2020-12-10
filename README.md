@@ -110,7 +110,7 @@ In this example:
     - 5\. Argument
 
 ### 4. Done, build the project!
-After doing these steps, everything is fine now. Just compile and build the project and the C# generated file will be created like this:
+After doing these steps, everything is fine now. Just compile and build the project. The C# file will be generated like this:
 ```csharp
 using System;
 
