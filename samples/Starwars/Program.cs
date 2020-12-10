@@ -1,4 +1,6 @@
-﻿namespace Starwars
+﻿using System;
+
+namespace Starwars
 {
     class Program
     {
@@ -12,6 +14,8 @@
                 Double = 1.234F,
                 String = "Hello World!"
             };
+
+            Console.WriteLine(@$"{graphqlGenerated.Bool}, {graphqlGenerated.Int32}, {graphqlGenerated.Float}, {graphqlGenerated.Double}, {graphqlGenerated.String}");
         }
     }
 }
