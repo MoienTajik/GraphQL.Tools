@@ -226,4 +226,4 @@ internal class Program
 
 ## Give a Star! :star:
 
-If you like or are using this project, please give it a star. Thanks!
+If you like or using this project, please give it a star. Thanks!
