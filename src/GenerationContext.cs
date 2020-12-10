@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using GraphQL.Tools.Generator.Visitors;
@@ -41,21 +42,19 @@ namespace GraphQL.Tools
 
         private static IEnumerable<IGeneratableTypeVisitor> FindVisitors(GeneratorExecutionContext context, AdditionalText additionalText)
         {
+            Debugger.Launch();
             context.AnalyzerConfigOptions
                 .GetOptions(additionalText)
                 .TryGetValue("build_metadata.graphql.visitors", out string? commaSeparatedVisitors);
 
             if (string.IsNullOrWhiteSpace(commaSeparatedVisitors))
-                return new List<IGeneratableTypeVisitor>
-                {
-                    new ClassVisitor(),
-                    new InterfaceVisitor(),
-                    new EnumVisitor(),
-                    new UnionVisitor(),
-                    new ArgumentVisitor()
-                };
+                return VisitorFactory.CreateAll();
 
-            var userDefinedVisitors = commaSeparatedVisitors!.Trim().Split(',');
+            var userDefinedVisitors = commaSeparatedVisitors!
+                .Trim()
+                .Split(',')
+                .Select(visitorName => visitorName.Trim());
+
             return userDefinedVisitors.Select(VisitorFactory.Create);
         }
 
