@@ -5,10 +5,10 @@
     simples: [Simple]!
     nullableSimples: [Simple!]
 
-    repeat: Repeat!
-
-    oneOf: OneOf!
+    identity: Identity!
 }
+
+# -----------------------------------------------------------
 
 type Simple {
     bool: Boolean!
@@ -18,19 +18,7 @@ type Simple {
     string: String!
 }
 
-type Repeat {
-    bool: [Boolean!]
-    int32: [Int!]
-    float: [Float!]
-    double: [Float!]
-    string: [String!]
-}
-
 # -----------------------------------------------------------
-
-type OneOf {
-   identity: Identity!
-}
 
 union Identity = EmailIdentity | PhoneNumberIdentity
 
