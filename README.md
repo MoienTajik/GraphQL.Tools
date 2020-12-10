@@ -30,4 +30,4 @@ Either commands, from Package Manager Console or .NET Core CLI, will download an
 
 ## Give a Star! :star:
 
-If you like or are using this project, please give it a star. Thanks!Tg
+If you like or are using this project, please give it a star. Thanks!
