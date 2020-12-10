@@ -6,7 +6,7 @@ namespace Starwars
     {
         static void Main()
         {
-            var graphqlGenerated = new GraphQL.Tools.Generated.Simple
+            var simple = new GraphQL.Tools.Generated.Simple
             {
                 Bool = true,
                 Int32 = 1,
@@ -15,7 +15,7 @@ namespace Starwars
                 String = "Hello World!"
             };
 
-            Console.WriteLine(@$"{graphqlGenerated.Bool}, {graphqlGenerated.Int32}, {graphqlGenerated.Float}, {graphqlGenerated.Double}, {graphqlGenerated.String}");
+            Console.WriteLine(@$"{simple.Bool}, {simple.Int32}, {simple.Float}, {simple.Double}, {simple.String}");
         }
     }
 }
