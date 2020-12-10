@@ -203,7 +203,7 @@ namespace GraphQL.Tools
 <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)Generated</CompilerGeneratedFilesOutputPath>
 ```
 
-### 5. Use generated source in your project
+### 5. Use the generated source in your project
 Now you can use the generated file in your project:
 ```csharp
 internal class Program
