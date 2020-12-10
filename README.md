@@ -20,7 +20,7 @@ You can install GraphQL.Tools with [NuGet Package Manager Console](https://www.n
 
     Install-Package GraphQL.Tools
     
-Or via the .NET Core command line interface:
+Or via the .NET Core command-line interface:
 
     dotnet add package GraphQL.Tools
     
