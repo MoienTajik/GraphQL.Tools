@@ -110,7 +110,7 @@ In this example:
     - 5\. Argument
 
 ### 4. Done, build the project!
-After doing these steps, everything is fine. Just compile and build the project and the C# generated file will be created like this:
+After doing these steps, everything is fine now. Just compile and build the project and the C# generated file will be created like this:
 ```csharp
 using System;
 
@@ -194,6 +194,27 @@ namespace GraphQL.Tools
         {
 	    public string Name { get; set; }
         }
+    }
+}
+```
+
+### 5. Use generated source in your project
+Now you can use the generated file in your project:
+```csharp
+internal class Program
+{
+    private static void Main()
+    {
+        var simple = new GraphQL.Tools.Generated.Simple
+        {
+            Bool = true,
+            Int32 = 1,
+            Float = 3.5F,
+            Double = 1.234F,
+            String = "Hello World!"
+        };
+
+        Console.WriteLine(@$"{simple.Bool}, {simple.Int32}, {simple.Float}, {simple.Double}, {simple.String}");
     }
 }
 ```
