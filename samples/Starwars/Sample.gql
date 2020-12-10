@@ -1,0 +1,109 @@
+﻿type Query {
+	person(name: String!): Simple!
+    simple: Simple!
+    simples: [Simple]!
+    nullableSimples: [Simple!]
+    requiredSimples: [Simple!]!
+
+    repeat: Repeat!
+    repeats: [Repeat]!
+
+    oneOf: OneOf!
+
+    mix: Mix!
+
+    knownType: KnownType!
+}
+
+type Simple {
+    bool: Boolean!
+    int32: Int!
+    float: Float!
+    double: Float!
+    string: String!
+}
+
+# -----------------------------------------------------------
+
+type Repeat {
+    bool: [Boolean!]
+    int32: [Int!]
+    float: [Float!]
+    double: [Float!]
+    string: [String!]
+}
+
+# -----------------------------------------------------------
+
+type OneOf {
+   identity: Identity!
+}
+
+union Identity = EmailIdentity | PhoneNumberIdentity | NationalIdIdentity
+
+type EmailIdentity {
+    value: String!
+}
+
+type PhoneNumberIdentity {
+    value: Float!
+}
+
+type NationalIdIdentity {
+    value: String!
+}
+
+# -----------------------------------------------------------
+
+type Mix {
+    color: Color!
+    colors: [Color!]
+
+    simple: Simple!
+    simples: [Simple!]
+
+    repeat: Repeat!
+    repeats: [Repeat!]
+
+    nestedMix: NestedMix!
+}
+
+type NestedMix {
+    name: String!
+    age: Int!
+}
+
+enum Color {
+  RED
+  GREEN
+  BLUE
+}
+
+# -----------------------------------------------------------
+
+type KnownType {
+    bool: Boolean
+    int32: Int
+    float: Float
+    double: Float
+    string: String
+}
+
+# -----------------------------------------------------------
+
+interface Character {
+  id: Int!
+  name: String!
+}
+
+type Human implements Character {
+  id: Int!
+  name: String!
+  totalCredits: Int
+}
+ 
+type Droid implements Character {
+  id: Int!
+  name: String!
+  primaryFunction: String
+}

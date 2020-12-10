@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <GraphQL Include="D:\Alibaba\Zii\galoo\src\GalooBaba\src\Schemas\BabaMock\Sample.gql" AdditionalNamespaces="System" />
+    <GraphQL Include="$(ProjectDir)Sample.gql" Visitors="Class, Interface, Enum, Union, Argument" AdditionalNamespaces="System" />
   </ItemGroup>
 
   <ItemGroup>
