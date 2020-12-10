@@ -4,7 +4,6 @@
     simple: Simple!
     simples: [Simple]!
     nullableSimples: [Simple!]
-    requiredSimples: [Simple!]!
 
     repeat: Repeat!
 
