@@ -109,7 +109,7 @@ In this example:
     - 4\. Union
     - 5\. Argument
 
-### 4. Done, Build the project!
+### 4. Done, build the project!
 After doing these steps, everything is fine. Just compile and build the project and the C# generated file will be created like this:
 ```csharp
 using System;
