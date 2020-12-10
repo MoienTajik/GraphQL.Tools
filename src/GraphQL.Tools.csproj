@@ -6,8 +6,11 @@
     <PackageIcon>GraphQL.png</PackageIcon>
     <Description>GraphQL.Tools is a GraphQL to C# compiler (code-generator) which turns your GraphQL schema to a set of C# classes, interfaces, and enums.</Description>
     <Copyright>Moien Tajik</Copyright>
+    <Authors>Moien Tajik</Authors>
     <PackageProjectUrl>https://github.com/MoienTajik/GraphQL.Tools</PackageProjectUrl>
     <RepositoryUrl>https://github.com/MoienTajik/GraphQL.Tools</RepositoryUrl>
+    <IncludeBuildOutput>false</IncludeBuildOutput> <!-- Do not include the generator as a lib dependency -->
+    <Version>1.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +26,10 @@
   <ItemGroup>
     <!-- Package the generator in the analyzer directory of the nuget package -->
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="$(PKGGraphQL)\lib\netstandard2.0\GraphQL.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="$(PKGGraphQL-Parser)\lib\netstandard2.0\GraphQL-Parser.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="$(PKGMicrosoft_Bcl_HashCode)\lib\netstandard2.0\Microsoft.Bcl.HashCode.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    
     <None Include="..\GraphQL.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
@@ -31,18 +38,4 @@
     <!-- Package the props file in nuget -->
     <None Include="GraphQL.Tools.props" Pack="true" PackagePath="build" Visible="false" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
-    <Authors>Moien Tajik</Authors>
-    <Version>1.0.1</Version>
-  </PropertyGroup>
-
-  <Target Name="GetDependencyTargetPaths">
-    <ItemGroup>
-      <TargetPathWithTargetPlatformMoniker Include="$(PKGGraphQL)\lib\netstandard2.0\GraphQL.dll" IncludeRuntimeDependency="false" />
-      <TargetPathWithTargetPlatformMoniker Include="$(PKGGraphQL-Parser)\lib\netstandard2.0\GraphQL-Parser.dll" IncludeRuntimeDependency="false" />
-      <TargetPathWithTargetPlatformMoniker Include="$(PKGMicrosoft_Bcl_HashCode)\lib\netstandard2.0\Microsoft.Bcl.HashCode.dll" IncludeRuntimeDependency="false" />
-    </ItemGroup>
-  </Target>
 </Project>
