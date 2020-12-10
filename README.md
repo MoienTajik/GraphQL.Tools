@@ -197,6 +197,11 @@ namespace GraphQL.Tools
     }
 }
 ```
+**\* Side Note:** You can view the generated file in `$(ProjectDir)\obj\Generated\GraphQL.Tools\GraphQL.Tools.GraphqlCodeGenerator\GraphQL.Tools.g.cs` by adding these elements to the `PropertyGroup` of your `.csproj` file:
+```xml
+<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+<CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)Generated</CompilerGeneratedFilesOutputPath>
+```
 
 ### 5. Use generated source in your project
 Now you can use the generated file in your project:
