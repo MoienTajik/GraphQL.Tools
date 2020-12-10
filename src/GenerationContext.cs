@@ -42,7 +42,6 @@ namespace GraphQL.Tools
 
         private static IEnumerable<IGeneratableTypeVisitor> FindVisitors(GeneratorExecutionContext context, AdditionalText additionalText)
         {
-            Debugger.Launch();
             context.AnalyzerConfigOptions
                 .GetOptions(additionalText)
                 .TryGetValue("build_metadata.graphql.visitors", out string? commaSeparatedVisitors);
