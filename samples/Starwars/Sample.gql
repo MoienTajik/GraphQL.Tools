@@ -1,6 +1,6 @@
 ﻿type Query {
-	getSimple(name: String!): Simple!
-
+    getSimple(name: String!): Simple!
+    
     simple: Simple!
     simples: [Simple]!
     nullableSimples: [Simple!]
