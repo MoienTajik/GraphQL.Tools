@@ -100,9 +100,9 @@ Open your project `.csproj` file and add a new `ItemGroup` section to it that co
 ```
 
 In this example:
-- • `Include` is the absolute path to our previously created GraphQL [schema file](https://github.com/MoienTajik/GraphQL.Tools/blob/main/samples/Starwars/Sample.gql) that ends with `.gql` or `.graphql`.
-- • `AdditionalNamespaces` are the comma-separated namespaces that need to be included in the generated file to compile properly (Custom types namespaces like DateTime, TimeSpan, ...).
-- • `Visitors` are the comma-separated name of generators (parsers) that should visit the provided schema file. Currently, these are available visitors:
+- `Include` is the absolute path to our previously created GraphQL [schema file](https://github.com/MoienTajik/GraphQL.Tools/blob/main/samples/Starwars/Sample.gql) that ends with `.gql` or `.graphql`.
+- `AdditionalNamespaces` are the comma-separated namespaces that need to be included in the generated file to compile properly (Custom types namespaces like DateTime, TimeSpan, ...).
+- `Visitors` are the comma-separated name of generators (parsers) that should visit the provided schema file. Currently, these are available visitors:
     - 1\. Class
     - 2\. Interface
     - 3\. Enum
