@@ -23,7 +23,8 @@ namespace GraphQL.Tools.Generator.Base
 
         public override string ToString()
         {
-            var properties = string.Join($",{Environment.NewLine}", Properties.Select(prop => prop.ToString()));
+            var separator = $",{Environment.NewLine}            ";
+            var properties = string.Join(separator, Properties.Select(prop => prop.ToString()));
 
             return $@"
         public enum {Name}
