@@ -3,7 +3,7 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 [![NuGet](https://img.shields.io/nuget/vpre/GraphQL.Tools.svg)](https://www.nuget.org/packages/GraphQL.Tools)
 
-GraphQL.Tools is a GraphQL to C# compiler (code-generator) which turns your GraphQL schema to a set of C# `classes`, `interfaces`, and `enums`.
+GraphQL.Tools is a GraphQL to C# compiler (code-generator) which turns your GraphQL schema into a set of C# `classes`, `interfaces`, and `enums`.
 
 ## Features 🌀
 1. GraphQL `type` to C# `class` compiler
