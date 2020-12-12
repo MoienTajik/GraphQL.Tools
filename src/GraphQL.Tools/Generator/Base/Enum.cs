@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace GraphQL.Tools.Generator.Base
 {
-    public class Interface : IGeneratableType
+    public class Enum : IGeneratableType
     {
-        public Interface(string name)
+        public Enum(string name)
         {
             Name = name;
             Properties = new HashSet<IMember>();
@@ -23,10 +23,11 @@ namespace GraphQL.Tools.Generator.Base
 
         public override string ToString()
         {
-            var properties = string.Join(Environment.NewLine, Properties.Select(prop => prop.ToString()));
+            var separator = $",{Environment.NewLine}            ";
+            var properties = string.Join(separator, Properties.Select(prop => prop.ToString()));
 
             return $@"
-        public interface {Name}
+        public enum {Name}
         {{
             {properties}
         }}

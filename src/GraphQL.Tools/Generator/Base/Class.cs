@@ -28,7 +28,7 @@ namespace GraphQL.Tools.Generator.Base
 
         public override string ToString()
         {
-            var separator = $"            {Environment.NewLine}";
+            var separator = $"{Environment.NewLine}            ";
             var properties = string.Join(separator, Properties.Select(prop => prop.ToString()));
 
             if (HasInterface)
@@ -37,7 +37,7 @@ namespace GraphQL.Tools.Generator.Base
                 return $@"
         public class {Name} : {interfaces}
         {{
-{properties}
+            {properties}
         }}
         ";
             }
@@ -46,7 +46,7 @@ namespace GraphQL.Tools.Generator.Base
                 return $@"
         public class {Name}
         {{
-{properties}
+            {properties}
         }}
         ";
             }
