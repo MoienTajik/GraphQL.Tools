@@ -24,8 +24,8 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2" PrivateAssets="all" />
 
     <!-- Generator dependencies -->
-    <PackageReference Include="GraphQL" Version="3.1.6" GeneratePathProperty="true" PrivateAssets="all" />
-    <PackageReference Include="GraphQL-Parser" Version="5.3.3" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="GraphQL" Version="4.6.0" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="GraphQL-Parser" Version="7.2.0" GeneratePathProperty="true" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" GeneratePathProperty="true" PrivateAssets="all" />
   </ItemGroup>
 
